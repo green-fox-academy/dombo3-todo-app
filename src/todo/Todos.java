@@ -14,6 +14,10 @@ public class Todos {
     todos.add(todo);
   }
 
+  public void remove(Todo todo) {
+    todos.remove(todo);
+  }
+
   public static List<Todo> getTodos() {
     return todos;
   }
