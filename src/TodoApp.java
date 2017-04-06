@@ -1,3 +1,7 @@
+import com.sun.org.apache.xpath.internal.SourceTree;
+import todo.Todo;
+import todo.Todos;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -7,17 +11,15 @@ import java.util.List;
 
 public class TodoApp {
 
-  final public static String TODO_TXT = "assets/todo.txt";
+  final public static String TODO_TXT = "../../../assets/todo.csv";
 
   public static void main(String[] args) {
-    argHandler(args);
-  }
-
-  public static void argHandler(String[] args) {
     if (args.length > 0) {
       switch (args[0]) {
         case "-l":
-          System.out.println(readFileLines());
+          List<String> todos = readFileLines();
+          Todos myTodoList = processData(todos);
+          System.out.println(myTodoList.list());
           break;
         case "-a":
           System.out.println("-a");
@@ -46,15 +48,32 @@ public class TodoApp {
   }
 
   public static List<String> readFileLines() {
-    List<String> todos;
+    List<String> lines;
     try {
       Path path = Paths.get(TODO_TXT);
-      todos = Files.readAllLines(path);
+      lines = Files.readAllLines(path);
     } catch (IOException e) {
       System.out.println("Exception occured: " + e.getClass());
-      todos = new ArrayList<>();
+      lines = new ArrayList<>();
     }
-    return todos;
+    return lines;
   }
 
+
+
+  private static Todos processData(List<String> rawLines) {
+    Todos myTodos = new Todos();
+
+    for (String line : rawLines) {
+      String[] splittedLine = line.split(";");
+
+      String todo = splittedLine[0];
+      boolean completed = (Integer.parseInt(splittedLine[1]) == 1 ) ? true : false;
+
+      myTodos.add(new Todo(todo, completed));
+    }
+
+    return myTodos;
   }
+}
+
