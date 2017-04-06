@@ -14,11 +14,12 @@ public class TodoApp {
   final public static String TODO_TXT = "../../../assets/todo.csv";
 
   public static void main(String[] args) {
-    if (args.length > 0) {
+    List<String> todos = readFileLines();
+    Todos myTodoList = processData(todos);
+
+    if (args.length == 1) {
       switch (args[0]) {
         case "-l":
-          List<String> todos = readFileLines();
-          Todos myTodoList = processData(todos);
           System.out.println(myTodoList.list());
           break;
         case "-a":
@@ -28,9 +29,19 @@ public class TodoApp {
           System.out.println("-r");
           break;
         case "-c":
-          System.out.println("-c");
+          System.out.println(myTodoList.toString());
           break;
       }
+    } else if (args.length == 2) {
+      try {
+        if (args[0].equals("-c")){
+          myTodoList.getTodos().get(Integer.parseInt(args[1])-1).complete();
+          writeFileLines(reverseData(myTodoList));
+        }
+      } catch (Exception e) {
+        System.out.println("Exception occured: " + e.getClass());
+      }
+
     } else {
       System.out.println(" \n Java Todo application\n ======================= \n Command line " +
               "arguments: \n -l   Lists all the tasks \n -a   Adds a new task \n -r   Removes " +
@@ -75,5 +86,15 @@ public class TodoApp {
 
     return myTodos;
   }
+
+  private static List<String> reverseData(Todos todos) {
+    List<String> lines = new ArrayList<>();
+    for (int i = 0; i < todos.getTodos().size(); i++) {
+      int isCompleted = (todos.getTodos().get(i).isCompleted()) ? 1 : 0;
+      lines.add(todos.getTodos().get(i).getName() + ";" +  isCompleted);
+    }
+    return lines;
+  }
 }
+
 
