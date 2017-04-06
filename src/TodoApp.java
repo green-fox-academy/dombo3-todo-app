@@ -1,4 +1,3 @@
-import com.sun.org.apache.xpath.internal.SourceTree;
 import todo.Todo;
 import todo.Todos;
 
@@ -20,13 +19,17 @@ public class TodoApp {
     if (args.length == 1) {
       switch (args[0]) {
         case "-l":
-          System.out.println(myTodoList.list());
+          if (myTodoList.getTodos().isEmpty()) {
+            System.out.println("No todos for today! :)");
+          } else {
+            System.out.println(myTodoList.list());
+          }
           break;
         case "-a":
           System.out.println("Please write a task after the argument -a");
           break;
         case "-r":
-          System.out.println("-r");
+          System.out.println("Unable to remove: no index provided");
           break;
         case "-c":
           System.out.println(myTodoList.toString());
@@ -34,7 +37,7 @@ public class TodoApp {
       }
     } else if (args.length == 2) {
       try {
-        if (args[0].equals("-c")){
+        if (args[0].equals("-c")) {
           myTodoList.getTodos().get(Integer.parseInt(args[1])-1).complete();
           writeFileLines(reverseData(myTodoList));
         }
@@ -43,6 +46,12 @@ public class TodoApp {
           myTodoList.add(new Todo(args[1],false));
           writeFileLines(reverseData(myTodoList));
         }
+
+        if (args[0].equals("-r")) {
+          myTodoList.remove(myTodoList.getTodos().get(Integer.parseInt(args[1])-1));
+          writeFileLines(reverseData(myTodoList));
+        }
+
       } catch (Exception e) {
         System.out.println("Exception occured: " + e.getClass());
       }
@@ -101,5 +110,3 @@ public class TodoApp {
     return lines;
   }
 }
-
-
