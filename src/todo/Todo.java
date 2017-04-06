@@ -10,11 +10,19 @@ public class Todo {
   }
 
   public void complete() {
-    this.completed = true;
+    if (this.completed) {
+      this.completed = false;
+    } else {
+      this.completed = true;
+    }
   }
 
   public String getName() {
     return name;
+  }
+
+  public boolean isCompleted() {
+    return completed;
   }
 
   @Override
