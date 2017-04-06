@@ -23,7 +23,7 @@ public class TodoApp {
           System.out.println(myTodoList.list());
           break;
         case "-a":
-          System.out.println("-a");
+          System.out.println("Please write a task after the argument -a");
           break;
         case "-r":
           System.out.println("-r");
@@ -36,6 +36,11 @@ public class TodoApp {
       try {
         if (args[0].equals("-c")){
           myTodoList.getTodos().get(Integer.parseInt(args[1])-1).complete();
+          writeFileLines(reverseData(myTodoList));
+        }
+
+        if (args[0].equals("-a")) {
+          myTodoList.add(new Todo(args[1],false));
           writeFileLines(reverseData(myTodoList));
         }
       } catch (Exception e) {
