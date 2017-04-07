@@ -84,9 +84,7 @@ public class TodoApp {
     return lines;
   }
 
-
-
-  private static Todos processData(List<String> rawLines) {
+  public static Todos processData(List<String> rawLines) {
     Todos myTodos = new Todos();
 
     for (String line : rawLines) {
