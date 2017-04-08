@@ -34,6 +34,9 @@ public class TodoApp {
         case "-c":
           System.out.println(myTodoList.toString());
           break;
+        default:
+          System.out.println("Not a valid argument");
+          break;
       }
     } else if (args.length == 2) {
       try {
